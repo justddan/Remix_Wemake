@@ -1,16 +1,25 @@
 import { Link, type MetaFunction } from "react-router";
 import {
   Card,
+  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "../components/ui/card";
-import { Car, ChevronUpIcon, EyeIcon, MessageCircleIcon } from "lucide-react";
+import {
+  Car,
+  ChevronUpIcon,
+  DotIcon,
+  EyeIcon,
+  HeartIcon,
+  MessageCircleIcon,
+} from "lucide-react";
 import { Button } from "../components/ui/button";
 import { ProductCard } from "~/features/products/compnents/product-card";
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 import { PostCard } from "~/features/community/components/post-card";
+import { IdeaCard } from "~/features/ideas/components/idea-card";
 
 export const meta: MetaFunction = () => {
   return [
@@ -68,6 +77,32 @@ export default function Home() {
           />
         ))}
       </div>
+      <div className="grid grid-cols-3 gap-4">
+        <div>
+          <h2 className="text-5xl font-bold leading-tight tracking-tight">
+            IdeasGPT
+          </h2>
+          <p className="text-xl font-light text-foreground">
+            Find ideas for your next project.
+          </p>
+          <Button variant="link" asChild className="text-lg p">
+            <Link to="/ideas">Explore all ideas &rarr;</Link>
+          </Button>
+        </div>
+
+        {Array.from({ length: 5 }).map((_, index) => (
+          <IdeaCard
+            id="ideaId"
+            title="A startup that creates an AI-powered generated personal trainer, delivering customized fitness recommendations and tracking of progress using a mobile app to track workouts and progress as well as a website to manage the bussiness."
+            viewCount={123}
+            createdAt="12 hours ago"
+            likeCount={12}
+            claimed={index % 2 === 0}
+          />
+        ))}
+      </div>
     </div>
   );
 }
+
+// 이 구성 요소를 /features/products/comComponents/product-card.tsx로 추상화하고 콘텐츠에 대한 props를 사용하세요.
