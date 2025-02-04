@@ -20,6 +20,8 @@ import { ProductCard } from "~/features/products/compnents/product-card";
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 import { PostCard } from "~/features/community/components/post-card";
 import { IdeaCard } from "~/features/ideas/components/idea-card";
+import { Badge } from "../components/ui/badge";
+import { JobCard } from "~/features/jobs/components/job-card";
 
 export const meta: MetaFunction = () => {
   return [
@@ -89,7 +91,6 @@ export default function Home() {
             <Link to="/ideas">Explore all ideas &rarr;</Link>
           </Button>
         </div>
-
         {Array.from({ length: 5 }).map((_, index) => (
           <IdeaCard
             id="ideaId"
@@ -98,6 +99,32 @@ export default function Home() {
             createdAt="12 hours ago"
             likeCount={12}
             claimed={index % 2 === 0}
+          />
+        ))}
+      </div>
+      <div className="grid grid-cols-4 gap-4">
+        <div>
+          <h2 className="text-5xl font-bold leading-tight tracking-tight">
+            Latest Jobs
+          </h2>
+          <p className="text-xl font-light text-foreground">
+            Find your dream job.
+          </p>
+          <Button variant="link" asChild className="text-lg p">
+            <Link to="/jobs">Explore all jobs &rarr;</Link>
+          </Button>
+        </div>
+        {Array.from({ length: 11 }).map((_, index) => (
+          <JobCard
+            id="jobId"
+            company="Facebook"
+            companyLogoUrl="https://github.com/facebook.png"
+            companyHq="San Francisco, CA"
+            title="Software Engineer"
+            postedAt="12 hours ago"
+            type="Full-time"
+            positionLocation="Remote"
+            salary="$100,000 - $150,000"
           />
         ))}
       </div>
