@@ -64,7 +64,11 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
 export default function DailyLeaderboardsPage({
   loaderData,
 }: Route.ComponentProps) {
-  const urlDate = DateTime.fromObject(loaderData!);
+  const urlDate = DateTime.fromObject({
+    year: loaderData.year,
+    month: loaderData.month,
+    day: loaderData.day,
+  });
 
   const previousDate = urlDate.minus({ day: 1 });
   const nextDate = urlDate.plus({ day: 1 });

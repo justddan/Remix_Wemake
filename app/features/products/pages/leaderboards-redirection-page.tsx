@@ -2,7 +2,7 @@ import { data, redirect } from "react-router";
 import type { Route } from "./+types/leaderboards-redirection-page";
 import { DateTime } from "luxon";
 
-export const loader = async ({ params }: Route.LoaderArgs) => {
+export function loader({ params }: Route.LoaderArgs) {
   const { period } = params;
   let url: string;
   const today = DateTime.now().setZone("Asia/Seoul");
@@ -18,4 +18,4 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
     return data(null, { status: 400 });
   }
   return redirect(url);
-};
+}
