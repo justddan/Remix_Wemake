@@ -17,7 +17,7 @@ export default function SelectPair({
   options,
 }: {
   name: string;
-  required: boolean;
+  required?: boolean;
   label: string;
   description: string;
   placeholder: string;
@@ -25,7 +25,7 @@ export default function SelectPair({
 }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="space-y-2 flex flex-col">
+    <div className="space-y-2 flex flex-col w-full">
       <Label className="flex flex-col" onClick={() => setOpen(true)}>
         {label}
         <small className="text-muted-foreground">{description}</small>
