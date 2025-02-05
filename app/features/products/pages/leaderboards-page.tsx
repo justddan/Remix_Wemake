@@ -29,6 +29,7 @@ export default function LeaderboardsPage() {
         </div>
         {Array.from({ length: 10 }).map((_, index) => (
           <ProductCard
+            key={`productId-${index}`}
             id="productId"
             name="Product Name"
             description="Product Description"
@@ -54,6 +55,7 @@ export default function LeaderboardsPage() {
         </div>
         {Array.from({ length: 10 }).map((_, index) => (
           <ProductCard
+            key={`productId-${index}`}
             id="productId"
             name="Product Name"
             description="Product Description"
@@ -79,6 +81,7 @@ export default function LeaderboardsPage() {
         </div>
         {Array.from({ length: 10 }).map((_, index) => (
           <ProductCard
+            key={`productId-${index}`}
             id="productId"
             name="Product Name"
             description="Product Description"
@@ -104,6 +107,7 @@ export default function LeaderboardsPage() {
         </div>
         {Array.from({ length: 7 }).map((_, index) => (
           <ProductCard
+            key={`productId-${index}`}
             id="productId"
             name="Product Name"
             description="Product Description"

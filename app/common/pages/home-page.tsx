@@ -49,6 +49,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
         </div>
         {Array.from({ length: 11 }).map((_, index) => (
           <ProductCard
+            key={`productId-${index}`}
             id="productId"
             name="Product Name"
             description="Product Description"
@@ -72,6 +73,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
         </div>
         {Array.from({ length: 11 }).map((_, index) => (
           <PostCard
+            key={`postId-${index}`}
             id="postId"
             title="What is the best productivity tool?"
             author="Nico"
@@ -95,6 +97,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
         </div>
         {Array.from({ length: 5 }).map((_, index) => (
           <IdeaCard
+            key={`ideaId-${index}`}
             id="ideaId"
             title="A startup that creates an AI-powered generated personal trainer, delivering customized fitness recommendations and tracking of progress using a mobile app to track workouts and progress as well as a website to manage the bussiness."
             viewCount={123}
@@ -118,6 +121,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
         </div>
         {Array.from({ length: 11 }).map((_, index) => (
           <JobCard
+            key={`jobId-${index}`}
             id="jobId"
             company="Facebook"
             companyLogoUrl="https://github.com/facebook.png"
@@ -144,6 +148,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
         </div>
         {Array.from({ length: 7 }).map((_, index) => (
           <TeamCard
+            key={`teamId-${index}`}
             id="teamId"
             leaderName="Lynn"
             leaderAvatarUrl="https://github.com/inthetiger.png"

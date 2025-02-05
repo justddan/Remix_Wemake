@@ -111,6 +111,7 @@ export default function WeeklyLeaderboardsPage({
       <div className="space-y-5 w-full max-w-screen-md mx-auto">
         {Array.from({ length: 11 }).map((_, index) => (
           <ProductCard
+            key={`productId-${index}`}
             id="productId"
             name="Product Name"
             description="Product Description"
