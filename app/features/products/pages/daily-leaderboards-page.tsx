@@ -1,7 +1,16 @@
-import { data, isRouteErrorResponse, type MetaFunction } from "react-router";
+import {
+  data,
+  isRouteErrorResponse,
+  Link,
+  type MetaFunction,
+} from "react-router";
 import type { Route } from "./+types/daily-leaderboards-page";
 import { DateTime } from "luxon";
 import { z } from "zod";
+import { Hero } from "~/common/components/hero";
+import { ProductCard } from "../compnents/product-card";
+import { Button } from "~/common/components/ui/button";
+import { ProductPagination } from "~/common/components/product-pagination";
 export const meta: MetaFunction = () => {
   return [
     { title: "Daily Leaderboards | WeMake" },
@@ -48,16 +57,56 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
     );
   }
   return {
-    date,
+    ...parsedData,
   };
 };
 
 export default function DailyLeaderboardsPage({
   loaderData,
 }: Route.ComponentProps) {
+  const urlDate = DateTime.fromObject(loaderData!);
+
+  const previousDate = urlDate.minus({ day: 1 });
+  const nextDate = urlDate.plus({ day: 1 });
+  const isToday = urlDate.equals(DateTime.now().startOf("day"));
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1>Daily Leaderboards Page</h1>
+    <div className="space-y-10">
+      <Hero
+        title={`The best products of ${urlDate.toLocaleString(
+          DateTime.DATE_MED
+        )}`}
+      />
+      <div className="flex items-center justify-center gap-2">
+        <Button variant="secondary" asChild>
+          <Link
+            to={`/products/leaderboards/daily/${previousDate.year}/${previousDate.month}/${previousDate.day}`}
+          >
+            &larr; {previousDate.toLocaleString(DateTime.DATE_SHORT)}
+          </Link>
+        </Button>
+        {!isToday && (
+          <Button variant="secondary" asChild>
+            <Link
+              to={`/products/leaderboards/daily/${nextDate.year}/${nextDate.month}/${nextDate.day}`}
+            >
+              {nextDate.toLocaleString(DateTime.DATE_SHORT)} &rarr;
+            </Link>
+          </Button>
+        )}
+      </div>
+      <div className="space-y-5 w-full max-w-screen-md mx-auto">
+        {Array.from({ length: 11 }).map((_, index) => (
+          <ProductCard
+            id="productId"
+            name="Product Name"
+            description="Product Description"
+            commentsCount={12}
+            viewsCount={12}
+            votesCount={120}
+          />
+        ))}
+      </div>
+      <ProductPagination totalPages={10} />
     </div>
   );
 }
