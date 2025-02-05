@@ -1,9 +1,4 @@
-import {
-  data,
-  isRouteErrorResponse,
-  Link,
-  type MetaFunction,
-} from "react-router";
+import { data, isRouteErrorResponse, Link } from "react-router";
 import type { Route } from "./+types/monthly-leaderboards-page";
 import { DateTime } from "luxon";
 import { z } from "zod";
@@ -11,10 +6,21 @@ import { Hero } from "~/common/components/hero";
 import { ProductCard } from "../compnents/product-card";
 import { Button } from "~/common/components/ui/button";
 import { ProductPagination } from "~/common/components/product-pagination";
-export const meta: MetaFunction = () => {
+
+export const meta: Route.MetaFunction = ({ params, data }) => {
+  const date = DateTime.fromObject({
+    year: Number(params.year),
+    month: Number(params.month),
+  })
+    .setZone("Asia/Seoul")
+    .setLocale("ko");
   return [
-    { title: "Monthly Leaderboards | WeMake" },
-    { name: "description", content: "Monthly product leaderboards" },
+    {
+      title: `Best of ${date.toLocaleString({
+        month: "long",
+        year: "2-digit",
+      })} | wemake`,
+    },
   ];
 };
 

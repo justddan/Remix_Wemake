@@ -1,9 +1,4 @@
-import {
-  data,
-  isRouteErrorResponse,
-  Link,
-  type MetaFunction,
-} from "react-router";
+import { data, isRouteErrorResponse, Link } from "react-router";
 import type { Route } from "./+types/weekly-leaderboards-page";
 import { DateTime } from "luxon";
 import { z } from "zod";
@@ -11,10 +6,22 @@ import { Hero } from "~/common/components/hero";
 import { ProductCard } from "../compnents/product-card";
 import { Button } from "~/common/components/ui/button";
 import { ProductPagination } from "~/common/components/product-pagination";
-export const meta: MetaFunction = () => {
+
+export const meta: Route.MetaFunction = ({ params, data }) => {
+  const date = DateTime.fromObject({
+    weekYear: Number(params.year),
+    weekNumber: Number(params.week),
+  })
+    .setZone("Asia/Seoul")
+    .setLocale("ko");
   return [
-    { title: "Weekly Leaderboards | WeMake" },
-    { name: "description", content: "Weekly product leaderboards" },
+    {
+      title: `Best of Week ${date
+        .startOf("week")
+        .toLocaleString(DateTime.DATE_SHORT)} - ${date
+        .endOf("week")
+        .toLocaleString(DateTime.DATE_SHORT)} | wemake`,
+    },
   ];
 };
 

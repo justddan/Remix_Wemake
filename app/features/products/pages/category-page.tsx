@@ -2,7 +2,7 @@ import { type MetaFunction } from "react-router";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Category | WeMake" },
+    { title: "Category | wemake" },
     { name: "description", content: "Products in this category" },
   ];
 };

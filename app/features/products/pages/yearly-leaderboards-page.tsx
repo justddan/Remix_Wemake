@@ -1,9 +1,4 @@
-import {
-  data,
-  isRouteErrorResponse,
-  Link,
-  type MetaFunction,
-} from "react-router";
+import { data, isRouteErrorResponse, Link } from "react-router";
 import type { Route } from "./+types/weekly-leaderboards-page";
 import { DateTime } from "luxon";
 import { z } from "zod";
@@ -11,10 +6,19 @@ import { Hero } from "~/common/components/hero";
 import { ProductCard } from "../compnents/product-card";
 import { Button } from "~/common/components/ui/button";
 import { ProductPagination } from "~/common/components/product-pagination";
-export const meta: MetaFunction = () => {
+
+export const meta: Route.MetaFunction = ({ params, data }) => {
+  const date = DateTime.fromObject({
+    year: Number(params.year),
+  })
+    .setZone("Asia/Seoul")
+    .setLocale("ko");
   return [
-    { title: "Yearly Leaderboards | WeMake" },
-    { name: "description", content: "Yearly product leaderboards" },
+    {
+      title: `Best of ${date.toLocaleString({
+        year: "numeric",
+      })} | wemake`,
+    },
   ];
 };
 
@@ -74,18 +78,16 @@ export default function WeeklyLeaderboardsPage({
   return (
     <div className="space-y-10">
       <Hero
-        title={`Best of Year ${urlDate
-          .startOf("year")
-          .toLocaleString(DateTime.DATE_SHORT)} - ${urlDate
-          .endOf("year")
-          .toLocaleString(DateTime.DATE_SHORT)}`}
+        title={`Best of ${urlDate.toLocaleString({
+          year: "numeric",
+        })}`}
       />
       <div className="flex items-center justify-center gap-2">
         <Button variant="secondary" asChild>
           <Link to={`/products/leaderboards/yearly/${previousYear.year}`}>
             &larr;{" "}
             {previousYear.toLocaleString({
-              year: "2-digit",
+              year: "numeric",
             })}
           </Link>
         </Button>
@@ -93,7 +95,7 @@ export default function WeeklyLeaderboardsPage({
           <Button variant="secondary" asChild>
             <Link to={`/products/leaderboards/yearly/${nextYear.year}`}>
               {nextYear.toLocaleString({
-                year: "2-digit",
+                year: "numeric",
               })}
               &rarr;
             </Link>
