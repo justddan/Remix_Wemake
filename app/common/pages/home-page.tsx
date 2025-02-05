@@ -27,7 +27,7 @@ import type { Route } from "./+types/home-page";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Home | WeMake" },
+    { title: "Home | wemake" },
     { name: "description", content: "Welcome to wemake" },
   ];
 };
