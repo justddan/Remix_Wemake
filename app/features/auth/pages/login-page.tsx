@@ -9,11 +9,11 @@ export const meta: Route.MetaFunction = () => {
 
 export default function LoginPage({}: Route.ComponentProps) {
   return (
-    <div className="flex flex-col items-center justify-center relative">
+    <div className="flex flex-col items-center justify-center relative h-full">
       <Button variant="ghost" asChild className="absolute right-8 top-8">
         <Link to="/auth/join">Join</Link>
       </Button>
-      <div className="flex items-center justify-center gap-10 mx-w-md">
+      <div className="flex flex-col items-center justify-center w-full gap-10 max-w-md">
         <h1 className="text-2xl font-bold">Log in to your account</h1>
         <Form className="w-full space-y-4">
           <InputPair
