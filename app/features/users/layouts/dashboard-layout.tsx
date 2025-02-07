@@ -61,7 +61,7 @@ export default function DashboardLayout() {
           </SidebarGroup>
         </SidebarContent>
       </Sidebar>
-      <div className="h-full">
+      <div className="w-full h-full">
         <Outlet />
       </div>
     </SidebarProvider>
