@@ -13,7 +13,7 @@ export const topics = pgTable("topics", {
   topic_id: bigint({ mode: "number" }).primaryKey().generatedAlwaysAsIdentity(),
   name: text().notNull(),
   slug: text().notNull(),
-  description: text().notNull(),
+  description: text(),
   created_at: timestamp().notNull().defaultNow(),
 });
 

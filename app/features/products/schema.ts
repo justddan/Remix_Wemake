@@ -78,7 +78,7 @@ export const reviews = pgTable(
       onDelete: "cascade",
     }),
     rating: integer().notNull(),
-    comment: text().notNull(),
+    review: text().notNull(),
     created_at: timestamp().notNull().defaultNow(),
     updated_at: timestamp().notNull().defaultNow(),
   },
