@@ -57,6 +57,20 @@
       "when": 1741149887153,
       "tag": "0007_slim_dragon_man",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1741249294746,
+      "tag": "0008_nice_vulcan",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1741249449762,
+      "tag": "0009_colorful_juggernaut",
+      "breakpoints": true
     }
   ]
 }

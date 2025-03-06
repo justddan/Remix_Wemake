@@ -1,0 +1,1 @@
+ALTER TABLE "topics" ALTER COLUMN "description" DROP NOT NULL;--> statement-breakpoint
