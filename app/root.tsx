@@ -6,12 +6,14 @@ import {
   Scripts,
   ScrollRestoration,
   useLocation,
+  useNavigation,
 } from "react-router";
 
 import type { Route } from "./+types/root";
 import "./app.css";
 import Navigation from "./common/components/navigation";
 import { Settings } from "luxon";
+import { cn } from "./lib/utils";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -48,8 +50,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   const { pathname } = useLocation();
+  const navigation = useNavigation();
+  const isLoading = navigation.state === "loading";
+
   return (
-    <div className={pathname.includes("/auth/") ? "" : "px-20 py-28"}>
+    <div
+      className={cn({
+        "px-5 md:px-20 py-28": !pathname.includes("/auth/"),
+        "transition-opacity animate-pulse": isLoading,
+      })}
+    >
       {pathname.includes("/auth/") ? null : (
         <Navigation
           isLoggedIn={true}
