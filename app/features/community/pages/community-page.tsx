@@ -26,15 +26,6 @@ export const meta: Route.MetaFunction = () => {
 };
 
 export const loader = async () => {
-  return {
-    secret: "secret",
-  };
-};
-
-export const clientLoader = async ({
-  serverLoader,
-}: Route.ClientLoaderArgs) => {
-  const serverData = await serverLoader();
   const [topics, posts] = await Promise.all([getTopics(), getPosts()]);
   return { topics, posts };
 };

@@ -24,12 +24,24 @@ import { Badge } from "../components/ui/badge";
 import { JobCard } from "~/features/jobs/components/job-card";
 import { TeamCard } from "~/features/teams/components/team-card";
 import type { Route } from "./+types/home-page";
+import { getProductsByDateRange } from "~/features/products/queries";
+import { DateTime } from "luxon";
 
 export const meta: MetaFunction = () => {
   return [
     { title: "Home | wemake" },
     { name: "description", content: "Welcome to wemake" },
   ];
+};
+
+export const loader = async () => {
+  const products = await getProductsByDateRange({
+    startDate: DateTime.now().startOf("day"),
+    endDate: DateTime.now().endOf("day"),
+    limit: 7,
+  });
+
+  return { products };
 };
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
@@ -47,15 +59,15 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/products/leaderboard">Explore all products &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 11 }).map((_, index) => (
+        {loaderData.products.map((product, index) => (
           <ProductCard
-            key={`productId-${index}`}
-            id="productId"
-            name="Product Name"
-            description="Product Description"
-            commentsCount={12}
-            viewsCount={12}
-            votesCount={120}
+            key={product.product_id}
+            id={product.product_id.toString()}
+            name={product.name}
+            description={product.description}
+            reviewsCount={product.reviews}
+            viewsCount={product.views}
+            votesCount={product.upvotes}
           />
         ))}
       </div>
@@ -74,12 +86,12 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
         {Array.from({ length: 11 }).map((_, index) => (
           <PostCard
             key={`postId-${index}`}
-            id="postId"
+            id={index}
             title="What is the best productivity tool?"
             author="Nico"
             authorAvatarUrl="https://github.com/shadcn.png"
             category="Productivity"
-            createdAt="12 hours ago"
+            postedAt="12 hours ago"
           />
         ))}
       </div>

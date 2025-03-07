@@ -71,6 +71,13 @@
       "when": 1741249449762,
       "tag": "0009_colorful_juggernaut",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1741311824471,
+      "tag": "0010_misty_quasimodo",
+      "breakpoints": true
     }
   ]
 }
