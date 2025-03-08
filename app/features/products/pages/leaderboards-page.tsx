@@ -62,7 +62,7 @@ export default function LeaderboardsPage({ loaderData }: Route.ComponentProps) {
             key={product.product_id.toString()}
             id={product.product_id.toString()}
             name={product.name}
-            description={product.description}
+            description={product.tagline}
             reviewsCount={product.reviews}
             viewsCount={product.views}
             votesCount={product.upvotes}
@@ -88,7 +88,7 @@ export default function LeaderboardsPage({ loaderData }: Route.ComponentProps) {
             key={product.product_id.toString()}
             id={product.product_id.toString()}
             name={product.name}
-            description={product.description}
+            description={product.tagline}
             reviewsCount={product.reviews}
             viewsCount={product.views}
             votesCount={product.upvotes}
@@ -114,7 +114,7 @@ export default function LeaderboardsPage({ loaderData }: Route.ComponentProps) {
             key={product.product_id.toString()}
             id={product.product_id.toString()}
             name={product.name}
-            description={product.description}
+            description={product.tagline}
             reviewsCount={product.reviews}
             viewsCount={product.views}
             votesCount={product.upvotes}
@@ -140,7 +140,7 @@ export default function LeaderboardsPage({ loaderData }: Route.ComponentProps) {
             key={product.product_id.toString()}
             id={product.product_id.toString()}
             name={product.name}
-            description={product.description}
+            description={product.tagline}
             reviewsCount={product.reviews}
             viewsCount={product.views}
             votesCount={product.upvotes}
