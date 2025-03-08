@@ -29,6 +29,7 @@ import { DateTime } from "luxon";
 import { getPosts } from "~/features/community/queries";
 import { getGptIdeas } from "~/features/ideas/queries";
 import { getJobs } from "~/features/jobs/queries";
+import { getTeams } from "~/features/teams/queries";
 
 export const meta: MetaFunction = () => {
   return [
@@ -47,8 +48,9 @@ export const loader = async () => {
   const posts = await getPosts({ limit: 7, sorting: "newest" });
   const ideas = await getGptIdeas({ limit: 7 });
   const jobs = await getJobs({ limit: 11 });
+  const teams = await getTeams({ limit: 7 });
 
-  return { products, posts, ideas, jobs };
+  return { products, posts, ideas, jobs, teams };
 };
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
@@ -166,18 +168,14 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/teams">Explore all teams &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 7 }).map((_, index) => (
+        {loaderData.teams.map((team) => (
           <TeamCard
-            key={`teamId-${index}`}
-            id="teamId"
-            leaderName="Lynn"
-            leaderAvatarUrl="https://github.com/inthetiger.png"
-            positions={[
-              "React Developer",
-              "Backend Developer",
-              "Product Manager",
-            ]}
-            projectDescription="a new social media platform"
+            key={team.team_id}
+            id={team.team_id}
+            leaderName={team.team_leader.username}
+            leaderAvatarUrl={team.team_leader.avatar}
+            positions={team.roles.split(",")}
+            projectDescription={team.product_description}
           />
         ))}
       </div>
