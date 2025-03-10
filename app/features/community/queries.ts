@@ -115,6 +115,7 @@ export const getPostById = async (postId: string) => {
 
 export const getReplies = async (postId: string) => {
   const replyQuery = `
+  reply_id,
   reply,
   created_at,
   user:profiles(
@@ -128,7 +129,7 @@ export const getReplies = async (postId: string) => {
     .select(
       `
       ${replyQuery},
-      replies (
+      post_replies (
         ${replyQuery}
       )
       `
