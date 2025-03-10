@@ -71,7 +71,7 @@ export function Reply({
             avatarUrl="https://github.com/serranoarevalo.png"
             timestamp="12 hours ago"
             content="I've been using Todolist for a while now and it's been great. It's simple, easy to use, and has a great community."
-            topLevel
+            topLevel={false}
           />
         </div>
       )}

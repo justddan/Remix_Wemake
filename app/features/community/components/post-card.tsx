@@ -37,7 +37,7 @@ export function PostCard({
   votesCount = 0,
 }: PostCardProps) {
   return (
-    <Link to={`/community/${id}`} className="block">
+    <a href={`/community/${id}`} className="block">
       <Card
         className={cn(
           "bg-transparent hover:bg-card/50 transition-colors",
@@ -72,6 +72,6 @@ export function PostCard({
           </CardFooter>
         )}
       </Card>
-    </Link>
+    </a>
   );
 }

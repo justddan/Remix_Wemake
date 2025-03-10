@@ -17,7 +17,7 @@ import {
 } from "~/common/components/ui/avatar";
 import { Badge } from "~/common/components/ui/badge";
 import { Reply } from "~/features/community/components/reply";
-import { getPostById } from "../queries";
+import { getPostById, getReplies } from "../queries";
 import { DateTime } from "luxon";
 
 export const meta: Route.MetaFunction = ({ params }) => {
@@ -26,6 +26,7 @@ export const meta: Route.MetaFunction = ({ params }) => {
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
   const post = await getPostById(params.postId);
+  // const replies = await getReplies(params.postId);
   return { post };
 };
 
@@ -128,9 +129,8 @@ export default function PostPage({ loaderData }: Route.ComponentProps) {
           </div>
           <div className="gap-2 text-sm flex flex-col">
             <span>
-              🎂 Joined{" "}
-              {DateTime.fromISO(loaderData.post.author_created_at).toRelative()}{" "}
-              ago
+              🎂 Joined
+              {DateTime.fromISO(loaderData.post.author_created_at).toRelative()}
             </span>
             <span>🚀 Launched {loaderData.post.products} products</span>
           </div>
