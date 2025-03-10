@@ -1,12 +1,11 @@
 import { Hero } from "~/common/components/hero";
-import type { Route } from "./+types/team-page";
+import { Button } from "~/common/components/ui/button";
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from "~/common/components/ui/avatar";
 import { Badge } from "~/common/components/ui/badge";
-import { Button } from "~/common/components/ui/button";
 import { Form } from "react-router";
 import InputPair from "~/common/components/input-pair";
 import {
@@ -15,36 +14,40 @@ import {
   CardHeader,
   CardTitle,
 } from "~/common/components/ui/card";
+import { getTeamById } from "../queries";
+import type { Route } from "./+types/team-page";
 
-export const meta: Route.MetaFunction = () => {
-  return [
-    { title: "Team | wemake" },
-    { name: "description", content: "Team page" },
-  ];
+export const meta: Route.MetaFunction = () => [
+  { title: "Team Details | wemake" },
+];
+
+export const loader = async ({ params }: Route.LoaderArgs) => {
+  const team = await getTeamById(params.teamId);
+  return { team };
 };
 
-export default function TeamPage() {
+export default function TeamPage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="space-y-20">
-      <Hero title="Join lynn's team" />
+      <Hero title={`Join ${loaderData.team.team_leader.name}'s team`} />
       <div className="grid grid-cols-6 gap-40 items-start">
         <div className="col-span-4 grid grid-cols-4 gap-5">
           {[
             {
               title: "Product name",
-              value: "Doggile Social",
+              value: loaderData.team.product_name,
             },
             {
               title: "Stage",
-              value: "MVP",
+              value: loaderData.team.product_stage,
             },
             {
-              title: "Team Size",
-              value: 3,
+              title: "Team size",
+              value: loaderData.team.team_size,
             },
             {
-              title: "Available Equity",
-              value: 50,
+              title: "Available equity",
+              value: loaderData.team.equity_split,
             },
           ].map((item) => (
             <Card>
@@ -52,10 +55,10 @@ export default function TeamPage() {
                 <CardTitle className="text-sm font-medium text-muted-foreground">
                   {item.title}
                 </CardTitle>
+                <CardContent className="p-0 capitalize font-bold text-2xl">
+                  <p>{item.value}</p>
+                </CardContent>
               </CardHeader>
-              <CardContent>
-                <p className="p-0 font-bold text-2xl">{item.value}</p>
-              </CardContent>
             </Card>
           ))}
           <Card className="col-span-2">
@@ -65,12 +68,7 @@ export default function TeamPage() {
               </CardTitle>
               <CardContent className="p-0 font-bold text-2xl">
                 <ul className="text-lg list-disc list-inside">
-                  {[
-                    "React Developer",
-                    "Backend Developer",
-                    "Product Manager",
-                    "UI/UX Designer",
-                  ].map((item) => (
+                  {loaderData.team.roles.split(",").map((item) => (
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
@@ -80,27 +78,31 @@ export default function TeamPage() {
           <Card className="col-span-2">
             <CardHeader>
               <CardTitle className="text-sm font-medium text-muted-foreground">
-                Idea Description
+                Idea description
               </CardTitle>
               <CardContent className="p-0 font-medium text-xl">
-                <p>
-                  Doggile Social is a social media platform for dogs. It allows
-                  dogs to connect with each other and share their thoughts and
-                  experiences.
-                </p>
+                <p>{loaderData.team.product_description}</p>
               </CardContent>
             </CardHeader>
           </Card>
         </div>
         <aside className="col-span-2 space-y-5 border rounded-lg p-6 shadow-sm">
-          <div className="flex gap-5 ">
+          <div className="flex gap-5">
             <Avatar className="size-14">
-              <AvatarImage src="https://github.com/inthetiger.png" />
-              <AvatarFallback>N</AvatarFallback>
+              <AvatarFallback>
+                {loaderData.team.team_leader.name[0]}
+              </AvatarFallback>
+              {loaderData.team.team_leader.avatar ? (
+                <AvatarImage src={loaderData.team.team_leader.avatar} />
+              ) : null}
             </Avatar>
             <div className="flex flex-col">
-              <h4 className="text-lg font-medium">Lynn</h4>
-              <Badge variant="secondary">Entrepreneur</Badge>
+              <h4 className="text-lg font-medium">
+                {loaderData.team.team_leader.name}
+              </h4>
+              <Badge variant="secondary" className="capitalize">
+                {loaderData.team.team_leader.role}
+              </Badge>
             </div>
           </div>
           <Form className="space-y-5">
@@ -112,9 +114,11 @@ export default function TeamPage() {
               id="introduction"
               required
               textArea
-              placeholder="i.e. I'm a React Developer with 5 years of experience"
+              placeholder="i.e. I'm a React Developer with 3 years of experience"
             />
-            <Button className="w-full">Get in touch</Button>
+            <Button type="submit" className="w-full">
+              Get in touch
+            </Button>
           </Form>
         </aside>
       </div>
