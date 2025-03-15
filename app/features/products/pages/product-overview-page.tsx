@@ -1,7 +1,16 @@
-import { ChevronUpIcon, StarIcon } from "lucide-react";
+import client from "~/supa-client";
 import type { Route } from "./+types/product-overview-page";
-import { Button } from "~/common/components/ui/button";
 import { Link, useOutletContext } from "react-router";
+
+export const loader = async ({ params }: Route.LoaderArgs) => {
+  await client.rpc("track_event", {
+    event_type: "product_view",
+    event_data: {
+      product_id: params.productId,
+    },
+  });
+  return null;
+};
 
 export default function ProductOverviewPage() {
   const { description, how_it_works } = useOutletContext<{
