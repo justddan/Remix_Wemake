@@ -1,6 +1,6 @@
 import { Hero } from "~/common/components/hero";
 import type { Route } from "./+types/category-page";
-import { ProductCard } from "../compnents/product-card";
+import { ProductCard } from "../components/product-card";
 import { ProductPagination } from "~/common/components/product-pagination";
 import {
   getCategory,
@@ -9,6 +9,7 @@ import {
 } from "../queries";
 import { z } from "zod";
 import { data } from "react-router";
+import { makeSSRClient } from "~/supa-client";
 
 export const meta: Route.MetaFunction = ({ params }) => {
   return [
@@ -28,12 +29,17 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   if (!success) {
     throw new Response("Invalid category", { status: 400 });
   }
-  const category = await getCategory(parsedData.category);
-  const products = await getProductsByCategory({
+  const { client } = makeSSRClient(request);
+  const category = await getCategory(client, {
+    categoryId: parsedData.category,
+  });
+  const products = await getProductsByCategory(client, {
     categoryId: parsedData.category,
     page: Number(page),
   });
-  const totalPages = await getCategoryPages(parsedData.category);
+  const totalPages = await getCategoryPages(client, {
+    categoryId: parsedData.category,
+  });
   return { category, products, totalPages };
 };
 

@@ -3,7 +3,7 @@ import type { Route } from "./+types/monthly-leaderboards-page";
 import { DateTime } from "luxon";
 import { z } from "zod";
 import { Hero } from "~/common/components/hero";
-import { ProductCard } from "../compnents/product-card";
+import { ProductCard } from "../components/product-card";
 import { Button } from "~/common/components/ui/button";
 import { ProductPagination } from "~/common/components/product-pagination";
 import {
@@ -11,7 +11,7 @@ import {
   getProductsPagesByDateRange,
 } from "../queries";
 import { PAGE_SIZE } from "../constants";
-
+import { makeSSRClient } from "~/supa-client";
 export const meta: Route.MetaFunction = ({ params, data }) => {
   const date = DateTime.fromObject({
     year: Number(params.year),
@@ -71,15 +71,16 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   }
 
   const url = new URL(request.url);
+  const { client } = makeSSRClient(request);
 
-  const products = await getProductsByDateRange({
+  const products = await getProductsByDateRange(client, {
     startDate: date.startOf("month"),
     endDate: date.endOf("month"),
     limit: PAGE_SIZE,
     page: Number(url.searchParams.get("page") || 1),
   });
 
-  const totalPages = await getProductsPagesByDateRange({
+  const totalPages = await getProductsPagesByDateRange(client, {
     startDate: date.startOf("month"),
     endDate: date.endOf("month"),
   });

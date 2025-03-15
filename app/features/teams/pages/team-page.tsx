@@ -16,13 +16,16 @@ import {
 } from "~/common/components/ui/card";
 import { getTeamById } from "../queries";
 import type { Route } from "./+types/team-page";
-
+import { makeSSRClient } from "~/supa-client";
 export const meta: Route.MetaFunction = () => [
   { title: "Team Details | wemake" },
 ];
 
-export const loader = async ({ params }: Route.LoaderArgs) => {
-  const team = await getTeamById(params.teamId);
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
+  const { client } = makeSSRClient(request);
+  const team = await getTeamById(client, {
+    teamId: params.teamId,
+  });
   return { team };
 };
 
