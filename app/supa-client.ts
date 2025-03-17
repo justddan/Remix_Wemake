@@ -50,7 +50,7 @@ export const makeSSRClient = (request: Request) => {
   const headers = new Headers();
   const serverSideClient = createServerClient<Database>(
     process.env.SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    process.env.SUPABASE_ANON_KEY!,
     {
       cookies: {
         getAll() {
