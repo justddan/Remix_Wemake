@@ -1,10 +1,11 @@
 import { Button } from "~/common/components/ui/button";
 import type { Route } from "./+types/login-page";
-import { Form, Link, useNavigation } from "react-router";
+import { Form, Link, redirect, useNavigation } from "react-router";
 import InputPair from "~/common/components/input-pair";
 import AuthButtons from "../components/auth-buttons";
 import { makeSSRClient } from "~/supa-client";
 import { CircleIcon, LoaderCircle } from "lucide-react";
+import { z } from "zod";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -13,15 +14,49 @@ export const meta: Route.MetaFunction = () => {
   ];
 };
 
-export const action = async ({ request }: Route.ActionArgs) => {
-  const { client } = makeSSRClient(request);
-  const formData = await request.formData();
-  const email = formData.get("email");
-  const password = formData.get("password");
+const formSchema = z.object({
+  email: z
+    .string({
+      required_error: "Email is required",
+      invalid_type_error: "Email should be a string",
+    })
+    .email("Invalid email address"),
+  password: z
+    .string({
+      required_error: "Password is required",
+      invalid_type_error: "Password should be a string",
+    })
+    .min(8, "Password must be at least 8 characters"),
+});
 
-  return {
-    message: "Login successful",
-  };
+export const action = async ({ request }: Route.ActionArgs) => {
+  const formData = await request.formData();
+  const { success, data, error } = formSchema.safeParse(
+    Object.fromEntries(formData)
+  );
+
+  if (!success) {
+    return {
+      formErrors: error.flatten().fieldErrors,
+    };
+  }
+
+  const { email, password } = data;
+
+  const { client, headers } = makeSSRClient(request);
+
+  const { error: loginError } = await client.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (loginError) {
+    return {
+      loginError: loginError.message,
+    };
+  }
+
+  return redirect("/", { headers });
 };
 
 export default function LoginPage({ actionData }: Route.ComponentProps) {
@@ -44,6 +79,11 @@ export default function LoginPage({ actionData }: Route.ComponentProps) {
             type="email"
             placeholder="i.e wemake@example.com"
           />
+          {actionData && "formErrors" in actionData && (
+            <p className="text-red-500">
+              {actionData.formErrors?.email?.join(", ")}
+            </p>
+          )}
           <InputPair
             id="password"
             label="Password"
@@ -53,6 +93,11 @@ export default function LoginPage({ actionData }: Route.ComponentProps) {
             type="password"
             placeholder="Enter your password"
           />
+          {actionData && "formErrors" in actionData && (
+            <p className="text-red-500">
+              {actionData.formErrors?.password?.join(", ")}
+            </p>
+          )}
           <Button className="w-full" type="submit" disabled={isSubmitting}>
             {isSubmitting ? (
               <LoaderCircle className="animate-spin" />
@@ -60,8 +105,8 @@ export default function LoginPage({ actionData }: Route.ComponentProps) {
               "Log in"
             )}
           </Button>
-          {actionData?.message && (
-            <p className="text-red-500">{actionData.message}</p>
+          {actionData && "loginError" in actionData && (
+            <p className="text-red-500">{actionData.loginError}</p>
           )}
         </Form>
         <AuthButtons />
