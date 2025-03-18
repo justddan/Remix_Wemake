@@ -160,7 +160,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             key={job.job_id}
             id={job.job_id}
             company={job.company_name}
-            companyLogoUrl={job.company_logo}
+            companyLogoUrl={job.company_logo ?? ""}
             companyHq={job.company_location}
             title={job.position}
             postedAt={job.created_at}

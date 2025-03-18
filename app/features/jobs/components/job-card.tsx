@@ -13,7 +13,7 @@ import { DateTime } from "luxon";
 interface JobCardProps {
   id: number;
   company: string;
-  companyLogoUrl: string | null;
+  companyLogoUrl: string;
   companyHq: string;
   title: string;
   postedAt: string;
@@ -39,7 +39,7 @@ export function JobCard({
         <CardHeader>
           <div className="flex items-center gap-4 mb-4">
             <img
-              src={companyLogoUrl ?? ""}
+              src={companyLogoUrl}
               alt={`${company} Logo`}
               className="size-10 rounded-full"
             />

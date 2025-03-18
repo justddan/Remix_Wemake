@@ -15,6 +15,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
 
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
+  console.log("dongkyu::", code);
   if (!code) {
     return redirect("/auth/login");
   }
