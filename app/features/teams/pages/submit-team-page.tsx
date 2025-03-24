@@ -44,8 +44,8 @@ export const action = async ({ request }: Route.ActionArgs) => {
     };
   }
 
-  const result = await createTeam(client, userId, { ...data });
-  return redirect(`/teams/${result?.team_id}`);
+  const { team_id } = await createTeam(client, userId, { ...data });
+  return redirect(`/teams/${team_id}`);
 };
 
 export default function SubmitTeamPage({ actionData }: Route.ComponentProps) {
