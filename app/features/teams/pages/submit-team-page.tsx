@@ -26,7 +26,7 @@ export const formSchema = z.object({
   name: z.string().min(1),
   stage: z.string(),
   size: z.string().min(1).max(100),
-  equity: z.ZodStringg().min(1).max(100),
+  equity: z.string().min(1).max(100),
   roles: z.string().min(1),
   description: z.string().min(1),
 });
