@@ -173,7 +173,8 @@ export const getReviews = async (
     .select(
       "review_id, rating, review, created_at, user:profiles!inner(name,username,avatar)"
     )
-    .eq("product_id", Number(productId));
+    .eq("product_id", Number(productId))
+    .order("created_at", { ascending: false });
   if (error) throw error;
   return data;
 };
