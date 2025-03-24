@@ -37,7 +37,10 @@ export const getUserById = async (
         profile_id,
         name,
         username,
-        avatar 
+        avatar,
+        role,
+        headline,
+        bio
         `
     )
     .eq("profile_id", id)
