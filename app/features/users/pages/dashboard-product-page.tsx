@@ -12,6 +12,9 @@ import {
   type ChartConfig,
 } from "~/common/components/ui/chart";
 import { Area, AreaChart, CartesianGrid, Line, XAxis } from "recharts";
+import { makeSSRClient } from "~/supa-client";
+import { getLoggedInUserId } from "../queries";
+import { redirect } from "react-router";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -21,14 +24,30 @@ export const meta: Route.MetaFunction = () => {
   ];
 };
 
-const chartData = [
-  { month: "January", views: 186, visitors: 100 },
-  { month: "February", views: 305, visitors: 34 },
-  { month: "March", views: 237, visitors: 65 },
-  { month: "April", views: 73, visitors: 32 },
-  { month: "May", views: 209, visitors: 66 },
-  { month: "June", views: 214, visitors: 434 },
-];
+export const loader = async ({ request, params }: Route.LoaderArgs) => {
+  const { client } = makeSSRClient(request);
+  const userId = await getLoggedInUserId(client);
+  const { error } = await client
+    .from("products")
+    .select("product_id")
+    .eq("profile_id", userId)
+    .eq("product_id", Number(params.productId))
+    .single();
+  if (error) {
+    throw redirect("/my/dashboard/products");
+  }
+
+  const { data, error: rpcError } = await client.rpc("get_product_stats", {
+    product_id: params.productId,
+  });
+  if (error) {
+    throw error;
+  }
+  return {
+    chartData: data,
+  };
+};
+
 const chartConfig = {
   views: {
     label: "Page Views",
@@ -40,7 +59,9 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export default function DashboardProductPage() {
+export default function DashboardProductPage({
+  loaderData,
+}: Route.ComponentProps) {
   return (
     <div className="space-y-5">
       <h1 className="text-2xl font-semibold mb-6">Analytics</h1>
@@ -52,7 +73,7 @@ export default function DashboardProductPage() {
           <ChartContainer config={chartConfig}>
             <AreaChart
               accessibilityLayer
-              data={chartData}
+              data={loaderData.chartData || []}
               margin={{
                 left: 12,
                 right: 12,
@@ -72,7 +93,7 @@ export default function DashboardProductPage() {
                 content={<ChartTooltipContent hideLabel />}
               />
               <Area
-                dataKey="views"
+                dataKey="product_views"
                 type="natural"
                 stroke="var(--color-views)"
                 fill="var(--color-views)"
@@ -80,7 +101,7 @@ export default function DashboardProductPage() {
                 dot={false}
               />
               <Area
-                dataKey="visitors"
+                dataKey="product_visits"
                 type="natural"
                 stroke="var(--color-visitors)"
                 fill="var(--color-visitors)"
