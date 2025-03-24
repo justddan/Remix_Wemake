@@ -47,9 +47,9 @@ export const action = async ({ request }: Route.ActionArgs) => {
     if (avatar.size <= 2097152 && avatar.type.startsWith("image/")) {
       const { data, error } = await client.storage
         .from("avatars")
-        .upload(userId, avatar, {
+        .upload(`${userId}/${Date.now()}`, avatar, {
           contentType: avatar.type,
-          upsert: true,
+          upsert: false,
         });
       if (error) {
         return {
@@ -106,7 +106,7 @@ export default function SettingsPage({
   loaderData,
   actionData,
 }: Route.ComponentProps) {
-  const [avatar, setAvatar] = useState<string | null>(null);
+  const [avatar, setAvatar] = useState<string | null>(loaderData.user.avatar);
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const file = event.target.files[0];
@@ -250,7 +250,7 @@ export default function SettingsPage({
               <span className="text-muted-foreground">
                 Allowed Formats: PNG, JPEG
               </span>
-              <span className="text-muted-foreground">Max file size: 1MB</span>
+              <span className="text-muted-foreground">Max file size: 2MB</span>
             </div>
             <Button className="w-full">Update avatar</Button>
           </div>
