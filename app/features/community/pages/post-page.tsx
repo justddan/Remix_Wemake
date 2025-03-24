@@ -75,7 +75,9 @@ export default function PostPage({ loaderData }: Route.ComponentProps) {
                   <span>{loaderData.post.author_name}</span>
                   <DotIcon className="size-5" />
                   <span>
-                    {DateTime.fromISO(loaderData.post.created_at).toRelative()}
+                    {DateTime.fromISO(loaderData.post.created_at, {
+                      zone: "utc",
+                    }).toRelative({ unit: "hours" })}
                   </span>
                   <DotIcon className="size-5" />
                   <span>{loaderData.post.replies} replies</span>
@@ -139,7 +141,9 @@ export default function PostPage({ loaderData }: Route.ComponentProps) {
           <div className="gap-2 text-sm flex flex-col">
             <span>
               🎂 Joined
-              {DateTime.fromISO(loaderData.post.author_created_at).toRelative()}
+              {DateTime.fromISO(loaderData.post.author_created_at, {
+                zone: "utc",
+              }).toRelative({ unit: "hours" })}
             </span>
             <span>🚀 Launched {loaderData.post.products} products</span>
           </div>
