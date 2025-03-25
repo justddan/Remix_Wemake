@@ -7,7 +7,7 @@ BEGIN
     INSERT INTO public.notifications (
         type,
         source_id,
-        target_id,
+        target_id
     )
     VALUES (
         'follow',
@@ -36,11 +36,13 @@ BEGIN
         type,
         source_id,
         target_id,
+        product_id
     )
     VALUES (
         'review',
         NEW.profile_id,
-        product_owner
+        product_owner,
+        New.product_id
     );
     RETURN NEW;
 END;
@@ -64,11 +66,13 @@ BEGIN
         type,
         source_id,
         target_id,
+        post_id
     )
     VALUES (
         'reply',
         NEW.profile_id,
-        post_owner
+        post_owner,
+        NEW.post_id
     );
     RETURN NEW;
 END;
