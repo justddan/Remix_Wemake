@@ -5,7 +5,7 @@ import { sendMessage } from "../mutations";
 import { z } from "zod";
 import { redirect } from "react-router";
 
-const formSchmea = z.object({
+const formSchema = z.object({
   content: z.string().min(1),
 });
 
@@ -24,6 +24,5 @@ export const action = async ({ request, params }: Route.ActionArgs) => {
     toUserId,
     content: formData.get("content") as string,
   });
-
   return redirect(`/my/messages/${messageRoomId}`);
 };
