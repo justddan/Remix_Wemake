@@ -74,7 +74,6 @@ export const toggleUpvote = async (
   client: SupabaseClient<Database>,
   { postId, userId }: { postId: string; userId: string }
 ) => {
-  await new Promise((resolve) => setTimeout(resolve, 5000));
   const { count } = await client
     .from("post_upvotes")
     .select("*", { count: "exact", head: true })

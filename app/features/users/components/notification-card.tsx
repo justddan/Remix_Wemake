@@ -12,9 +12,10 @@ import {
 import { Button } from "~/common/components/ui/button";
 import { EyeIcon } from "lucide-react";
 import { cn } from "~/lib/utils";
-import { Link } from "react-router";
+import { Link, useFetcher } from "react-router";
 
 interface NotificationCardProps {
+  id: number;
   avatarUrl: string;
   avatarFallback: string;
   username: string;
@@ -27,6 +28,7 @@ interface NotificationCardProps {
 }
 
 export function NotificationCard({
+  id,
   avatarUrl,
   avatarFallback,
   username,
@@ -47,8 +49,12 @@ export function NotificationCard({
         return " replied to your post: ";
     }
   };
+  const fetcher = useFetcher();
+  const optimisticSeen = fetcher.state === "idle" ? seen : true;
   return (
-    <Card className={cn("min-w-[450px]", seen ? "" : "bg-yellow-500/60")}>
+    <Card
+      className={cn("min-w-[450px]", optimisticSeen ? "" : "bg-yellow-500/60")}
+    >
       <CardHeader className="flex flex-row gap-5 items-start">
         <Avatar>
           <AvatarImage src={avatarUrl} />
@@ -73,9 +79,13 @@ export function NotificationCard({
         </div>
       </CardHeader>
       <CardFooter className="flex justify-end">
-        <Button variant="outline" size="icon">
-          <EyeIcon className="size-4" />
-        </Button>
+        {!optimisticSeen && (
+          <fetcher.Form method="POST" action={`/my/notifications/${id}/see`}>
+            <Button variant="outline" size="icon">
+              <EyeIcon className="size-4" />
+            </Button>
+          </fetcher.Form>
+        )}
       </CardFooter>
     </Card>
   );
