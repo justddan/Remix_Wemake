@@ -30,7 +30,15 @@ const ResponseSchema = z.object({
   ideas: z.array(IdeaSchema),
 });
 
-export const loader = async ({ request }: Route.LoaderArgs) => {
+export const action = async ({ request }: Route.ActionArgs) => {
+  if (request.method !== "POST") {
+    return new Response(null, { status: 404 });
+  }
+  const header = request.headers.get("X-POTATO");
+  if (!header || header !== "X-TOMATO") {
+    return new Response(null, { status: 404 });
+  }
+
   const completion = await openai.beta.chat.completions.parse({
     model: "gpt-4o",
     messages: [

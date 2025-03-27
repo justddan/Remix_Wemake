@@ -16,6 +16,7 @@ export default defineConfig({
     ssr: false,
   },
   server: {
+    allowedHosts: true,
     port: 3000,
   },
 });
