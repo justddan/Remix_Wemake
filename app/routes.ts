@@ -42,6 +42,10 @@ export default [
     route("/search", "features/products/pages/search-page.tsx"),
     route("/submit", "features/products/pages/submit-product-page.tsx"),
     route("/promote", "features/products/pages/promote-page.tsx"),
+    route(
+      "/promote/success",
+      "features/products/pages/promote-success-page.tsx"
+    ),
     ...prefix("/:productId", [
       index("features/products/pages/product-redirect-page.tsx"),
       layout("features/products/layouts/product-overview-layout.tsx", [
